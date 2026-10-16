@@ -54,6 +54,7 @@ section[data-testid="stSidebar"][aria-expanded="true"] {
     background-color: #dce5f1 !important;
     border-right: 1.5px solid rgba(14, 116, 144, 0.25) !important;
     box-shadow: 6px 0 24px rgba(15, 23, 42, 0.06) !important;
+    z-index: 100001 !important;
 }
 
 section[data-testid="stSidebar"][aria-expanded="false"] {
@@ -233,7 +234,7 @@ div[data-testid="stSidebarCollapseButton"] button svg {
 /* ── 5. MARQUEE TICKER ── */
 .dev-marquee-wrapper {
     position: fixed;
-    top: 0.6rem;
+    top: 0.65rem;
     left: 4.5rem;
     width: calc(100vw - 7rem);
     max-width: 580px;
@@ -246,7 +247,7 @@ div[data-testid="stSidebarCollapseButton"] button svg {
     box-shadow: 0 2px 10px rgba(14, 116, 144, 0.12);
     display: flex;
     align-items: center;
-    z-index: 99;
+    z-index: 100000 !important;
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
@@ -779,7 +780,13 @@ components.html(
             try { return window.parent.document; } catch(e) { return document; }
         }
         const doc = getDoc();
-        function attach() {
+        function syncSidebarAndButtons() {
+            const sidebar = doc.querySelector('section[data-testid="stSidebar"]');
+            const marquee = doc.querySelector('.dev-marquee-wrapper');
+            if (sidebar && marquee) {
+                const isExpanded = sidebar.getAttribute('aria-expanded') === 'true';
+                marquee.style.display = isExpanded ? 'none' : 'flex';
+            }
             const btns = doc.querySelectorAll('.stButton > button');
             btns.forEach(btn => {
                 if (btn && !btn.dataset.loadingAttached) {
@@ -792,12 +799,12 @@ components.html(
                 }
             });
         }
-        attach();
+        syncSidebarAndButtons();
         try {
-            const observer = new MutationObserver(() => attach());
-            observer.observe(doc.body, { childList: true, subtree: true });
+            const observer = new MutationObserver(() => syncSidebarAndButtons());
+            observer.observe(doc.body, { childList: true, subtree: true, attributes: true });
         } catch(e) {
-            setInterval(attach, 250);
+            setInterval(syncSidebarAndButtons, 250);
         }
     })();
     </script>
