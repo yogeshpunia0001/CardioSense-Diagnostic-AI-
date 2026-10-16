@@ -21,8 +21,17 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
-html, body, [class*="css"] {
+:root {
+    --primary-color: #0284c7 !important;
+    --background-color: #d8e2ee !important;
+    --secondary-background-color: #f4f8fd !important;
+    --text-color: #0f172a !important;
+    color-scheme: light !important;
+}
+
+html, body, [class*="css"], .stApp {
     font-family: 'Plus Jakarta Sans', sans-serif;
+    color-scheme: light !important;
 }
 
 /* ── 1. EXPANDED WORKSPACE & REDUCED VACANT SPACE ── */
@@ -106,6 +115,15 @@ div[data-testid="stExpander"] summary {
     font-weight: 750 !important;
     padding: 0.75rem 1rem !important;
     border-bottom: 1px solid rgba(14, 116, 144, 0.2) !important;
+}
+
+div[data-testid="stExpander"] summary * {
+    color: #0f172a !important;
+    font-weight: 750 !important;
+}
+
+div[data-testid="stExpander"] summary svg {
+    fill: #0284c7 !important;
 }
 
 div[data-testid="stExpander"] div[data-testid="stExpanderDetails"] {
@@ -228,12 +246,16 @@ div[data-testid="stSidebarCollapseButton"] button svg {
     box-shadow: 0 2px 10px rgba(14, 116, 144, 0.12);
     display: flex;
     align-items: center;
-    z-index: 100000;
+    z-index: 99;
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
 
-div[data-testid="stSidebar"][aria-expanded="true"] ~ div .dev-marquee-wrapper,
+/* Hide marquee when sidebar is expanded */
+section[data-testid="stSidebar"][aria-expanded="true"] ~ * .dev-marquee-wrapper,
+section[data-testid="stSidebar"][aria-expanded="true"] ~ div .dev-marquee-wrapper,
+section[data-testid="stSidebar"][aria-expanded="true"] ~ main .dev-marquee-wrapper,
+.stApp:has(section[data-testid="stSidebar"][aria-expanded="true"]) .dev-marquee-wrapper,
 div:has(section[data-testid="stSidebar"][aria-expanded="true"]) .dev-marquee-wrapper {
     display: none !important;
     visibility: hidden !important;
@@ -329,7 +351,9 @@ div:has(section[data-testid="stSidebar"][aria-expanded="true"]) .dev-marquee-wra
 }
 
 /* Bold Labels across Inputs */
-.stSlider label, .stSelectbox label, .stNumberInput label, .stRadio label {
+.stSlider label, .stSelectbox label, .stNumberInput label, .stRadio label,
+div[data-testid="stWidgetLabel"] label,
+div[data-testid="stWidgetLabel"] p {
     font-size: 0.92rem !important;
     font-weight: 750 !important;
     color: #0f172a !important;
@@ -337,6 +361,7 @@ div:has(section[data-testid="stSidebar"][aria-expanded="true"]) .dev-marquee-wra
 }
 
 /* High Contrast Radios */
+div[data-testid="stRadio"] label,
 div[data-testid="stRadio"] label p,
 div[data-testid="stRadio"] span,
 div[data-testid="stRadio"] div[data-testid="stMarkdownContainer"] p {
@@ -345,38 +370,125 @@ div[data-testid="stRadio"] div[data-testid="stMarkdownContainer"] p {
     font-size: 0.96rem !important;
 }
 
-/* Number Stepper Borders & Text */
-div[data-testid="stNumberInput"] div[data-baseweb="input"] {
-    background: #f4f8fd !important;
-    border: 1.5px solid rgba(148, 163, 184, 0.55) !important;
-    border-radius: 8px !important;
-}
-
+/* ── NUMBER INPUT: Stepper, Input Box & Stepper Buttons ── */
+div[data-testid="stNumberInput"] div[data-baseweb="input"],
+div[data-testid="stNumberInput"] div[data-baseweb="base-input"],
 div[data-testid="stNumberInput"] input {
+    background-color: #f4f8fd !important;
+    background: #f4f8fd !important;
     color: #0f172a !important;
     font-weight: 700 !important;
     font-size: 0.98rem !important;
 }
 
+div[data-testid="stNumberInput"] div[data-baseweb="input"] {
+    border: 1.5px solid rgba(148, 163, 184, 0.55) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
 div[data-testid="stNumberInput"] button {
     border-left: 1px solid rgba(148, 163, 184, 0.4) !important;
     border-right: 1px solid rgba(148, 163, 184, 0.4) !important;
+    background-color: #e1ebf7 !important;
     background: #e1ebf7 !important;
     color: #0284c7 !important;
     font-weight: 700 !important;
 }
 
 div[data-testid="stNumberInput"] button:hover {
+    background-color: #d0e2f5 !important;
     background: #d0e2f5 !important;
     color: #0369a1 !important;
 }
 
-div[data-baseweb="select"] > div {
+div[data-testid="stNumberInput"] button svg {
+    fill: #0284c7 !important;
+}
+
+/* ── SELECTBOX: Main Canvas & Sidebar ── */
+div[data-testid="stSelectbox"] div[data-baseweb="select"],
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div,
+div[data-testid="stSelectbox"] div[role="combobox"],
+div[data-testid="stSelectbox"] div[aria-expanded],
+div[data-baseweb="select"],
+div[data-baseweb="select"] > div,
+div[data-baseweb="select"] div[role="combobox"],
+div[data-baseweb="select"] div {
     background-color: #f4f8fd !important;
+    background: #f4f8fd !important;
     color: #0f172a !important;
     font-weight: 600 !important;
+}
+
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div,
+div[data-baseweb="select"] > div {
     border: 1.5px solid rgba(148, 163, 184, 0.55) !important;
     border-radius: 8px !important;
+}
+
+/* Force selectbox inner texts/spans to remain dark navy */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] *,
+div[data-baseweb="select"] *,
+div[data-testid="stSelectbox"] span,
+div[data-testid="stSelectbox"] p,
+div[data-testid="stSelectbox"] div {
+    color: #0f172a !important;
+    font-weight: 600 !important;
+}
+
+/* Selectbox Dropdown Icon */
+div[data-testid="stSelectbox"] svg,
+div[data-baseweb="select"] svg {
+    fill: #0284c7 !important;
+    stroke: #0284c7 !important;
+}
+
+/* Selectbox Dropdown Menu Popover Options */
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] > div,
+div[data-baseweb="popover"] ul,
+div[data-baseweb="popover"] ul[role="listbox"],
+ul[data-testid="stSelectboxVirtualDropdown"] {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border: 1.5px solid rgba(14, 116, 144, 0.25) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12) !important;
+}
+
+div[data-baseweb="popover"] li,
+div[data-baseweb="popover"] li[role="option"],
+li[data-testid="stSelectboxOption"] {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-weight: 600 !important;
+    font-size: 0.92rem !important;
+}
+
+div[data-baseweb="popover"] li:hover,
+div[data-baseweb="popover"] li[aria-selected="true"],
+li[data-testid="stSelectboxOption"]:hover {
+    background-color: #e0f2fe !important;
+    background: #e0f2fe !important;
+    color: #0284c7 !important;
+}
+
+div[data-baseweb="popover"] li * {
+    color: inherit !important;
+}
+
+/* Sliders: Numbers and Labels */
+div[data-testid="stSlider"] [data-testid="stWidgetLabel"] label,
+div[data-testid="stSlider"] [data-testid="stWidgetLabel"] p,
+div[data-testid="stSlider"] div[data-testid="stMarkdownContainer"] p {
+    color: #0f172a !important;
+    font-weight: 750 !important;
+}
+
+div[data-testid="stSlider"] div[data-testid="stTickBar"] span {
+    color: #334155 !important;
 }
 
 /* ── 8. PREDICTION BUTTON & LOADING STATE ── */
