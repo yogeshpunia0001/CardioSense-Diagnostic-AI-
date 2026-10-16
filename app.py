@@ -832,6 +832,6 @@ if predict_btn:
 # -----------------------------------------------------------------------------
 st.markdown("""
 <div class="footer-credit">
-    ❤️ Designed & Developed by <b>THE YOGESH POONIA</b> · Machine Learning & AI Engineering Portfolio
+    😎 Designed & Developed by <b>THE YOGESH POONIA</b>.
 </div>
 """, unsafe_allow_html=True)
